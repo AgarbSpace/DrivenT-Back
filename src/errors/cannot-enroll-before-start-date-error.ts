@@ -1,8 +1,8 @@
-import { ApplicationError } from "@/protocols";
+import { ApplicationError } from '@/protocols';
 
 export function cannotEnrollBeforeStartDateError(): ApplicationError {
   return {
-    error: "CannotEnrollBeforeStartDateError",
-    message: "Cannot enroll before event start date!",
+    error: 'CannotEnrollBeforeStartDateError',
+    message: 'Cannot enroll before event start date!',
   };
 }

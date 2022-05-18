@@ -1,8 +1,8 @@
-import { ApplicationError } from "@/protocols";
+import { ApplicationError } from '@/protocols';
 
 export function notFoundError(): ApplicationError {
   return {
-    error: "NotFoundError",
-    message: "No result for this search!",
+    error: 'NotFoundError',
+    message: 'No result for this search!',
   };
 }
