@@ -1,11 +1,12 @@
 {
-  "name": "drint.t-front",
+  "name": "drint.t-back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests --noStackTrace --runInBand",
-    "build": "ttsc"
+    "prebuild": "rm -rf dist",
+    "build": "ttsc -p tsconfig.build.json"
   },
   "keywords": [
     "driven.t",
@@ -17,5 +18,34 @@
     "nodejs"
   ],
   "author": "Alexandre Nunes",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^17.0.34",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "git-commit-msg-linter": "^4.1.2",
+    "jest": "^26.6.3",
+    "lint-staged": "^12.4.1",
+    "nodemon": "^2.0.16",
+    "supertest": "^6.2.3",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.9.0",
+    "ttypescript": "^1.5.12",
+    "typescript": "^4.2.4",
+    "typescript-transform-paths": "^2.2.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "http-status": "^1.5.2",
+    "reflect-metadata": "^0.1.13"
+  }
 }
