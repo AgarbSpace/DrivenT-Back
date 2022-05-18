@@ -1,0 +1,21 @@
+{
+  "name": "drint.t-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --passWithNoTests --noStackTrace --runInBand",
+    "build": "ttsc"
+  },
+  "keywords": [
+    "driven.t",
+    "back-end",
+    "typescript",
+    "driven",
+    "postgres",
+    "express",
+    "nodejs"
+  ],
+  "author": "Alexandre Nunes",
+  "license": "ISC"
+}
