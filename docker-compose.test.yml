@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  drivent-postgres-test:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - ~/data/drivent/postgres-test:/var/lib/postgresql/data
+    command: postgres -p ${POSTGRES_PORT}
+  drivent-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: drivent-test
+    depends_on:
+      - drivent-postgres-test
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
+    working_dir: /usr/src/drivent
+    command: npm test
+    environment:
+      NODE_ENV: test

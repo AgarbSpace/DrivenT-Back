@@ -8,7 +8,11 @@
     "prebuild": "rm -rf dist",
     "build": "ttsc -p tsconfig.build.json",
     "prepare": "husky install",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "dev:postgres": "docker-compose -f docker-compose.development.yml --env-file .env.development up -d drivent-postgres-development",
+    "dev:migration:run": "dotenv -e .env.development prisma migrate dev --name init",
+    "dev:migration:generate": "dotenv -e .env.development prisma migrate dev",
+    "dev:prisma:studio": "dotenv -e .env.development prisma studio"
   },
   "keywords": [
     "driven.t",
@@ -29,6 +33,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
+    "dotenv-cli": "^5.1.0",
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -40,6 +45,7 @@
     "lint-staged": "^12.4.1",
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
+    "prisma": "^3.14.0",
     "supertest": "^6.2.3",
     "ts-jest": "^26.5.5",
     "ts-node": "^10.7.0",
@@ -49,6 +55,7 @@
     "typescript-transform-paths": "^2.2.3"
   },
   "dependencies": {
+    "@prisma/client": "^3.14.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
