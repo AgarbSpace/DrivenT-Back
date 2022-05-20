@@ -4,15 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --noStackTrace --runInBand",
     "prebuild": "rm -rf dist",
     "build": "ttsc -p tsconfig.build.json",
     "prepare": "husky install",
     "lint:staged": "lint-staged",
-    "dev:postgres": "docker-compose -f docker-compose.development.yml --env-file .env.development up -d drivent-postgres-development",
-    "dev:migration:run": "dotenv -e .env.development prisma migrate dev --name init",
-    "dev:migration:generate": "dotenv -e .env.development prisma migrate dev",
-    "dev:prisma:studio": "dotenv -e .env.development prisma studio"
+    "test": "jest --passWithNoTests --runInBand",
+    "test:watch": "jest --watch --passWithNoTests --runInBand",
+    "test:compose": "docker-compose -f docker-compose.test.yml --env-file .env.test",
+    "test:postgres": "npm run test:compose -- up -d drivent-postgres-test",
+    "test:postgres:down": "npm run test:compose down -v",
+    "test:load-envs": "dotenv -e .env.test",
+    "test:migration:run": "npm run test:load-envs prisma migrate deploy",
+    "dev:compose": "docker-compose -f docker-compose.development.yml --env-file .env.development",
+    "dev:postgres": "npm run dev:compose -- up -d drivent-postgres-development",
+    "dev:postgres:down": "npm run dev:compose down",
+    "dev:load-envs": "dotenv -e .env.development",
+    "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
+    "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
+    "dev:prisma:studio": "npm run dev:load-envs prisma studio"
   },
   "keywords": [
     "driven.t",
@@ -26,6 +35,8 @@
   "author": "Alexandre Nunes",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^26.0.23",
@@ -56,11 +67,14 @@
   },
   "dependencies": {
     "@prisma/client": "^3.14.0",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
+    "dotenv-expand": "^8.0.3",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "http-status": "^1.5.2",
+    "joi": "^17.6.0",
     "reflect-metadata": "^0.1.13"
   }
 }

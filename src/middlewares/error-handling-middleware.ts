@@ -9,38 +9,31 @@ export function handleApplicationErrors(
   res: Response,
   _next: NextFunction,
 ) {
-  if (err.error === 'UnauthorizedError') {
+  if (err.name === 'UnauthorizedError') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
     });
   }
 
-  if (err.error === 'CannotEnrollBeforeStartDateError') {
+  if (err.name === 'CannotEnrollBeforeStartDateError') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
     });
   }
 
-  if (err.error === 'InvalidDataError') {
-    return res.status(httpStatus.UNPROCESSABLE_ENTITY).send({
-      message: err.message,
-      details: err?.details,
-    });
-  }
-
-  if (err.error === 'ConflictError') {
+  if (err.name === 'ConflictError') {
     return res.status(httpStatus.CONFLICT).send({
       message: err.message,
     });
   }
 
-  if (err.error === 'UnauthorizedError') {
+  if (err.name === 'UnauthorizedError') {
     return res.status(httpStatus.UNAUTHORIZED).send({
       message: err.message,
     });
   }
 
-  if (err.error === 'NotFoundError') {
+  if (err.name === 'NotFoundError') {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });

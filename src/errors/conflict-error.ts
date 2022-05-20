@@ -2,7 +2,7 @@ import { ApplicationError } from '@/protocols';
 
 export function conflictError(message: string): ApplicationError {
   return {
-    error: 'ConflictError',
+    name: 'ConflictError',
     message,
   };
 }
