@@ -15,6 +15,7 @@
     "test:postgres:down": "npm run test:compose down -v",
     "test:load-envs": "dotenv -e .env.test",
     "test:migration:run": "npm run test:load-envs prisma migrate deploy",
+    "test:migration:generate": "npm run test:load-envs prisma migrate dev",
     "dev:compose": "docker-compose -f docker-compose.development.yml --env-file .env.development",
     "dev:postgres": "npm run dev:compose -- up -d drivent-postgres-development",
     "dev:postgres:down": "npm run dev:compose down",
@@ -40,6 +41,7 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^26.0.23",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.34",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
@@ -75,6 +77,7 @@
     "express-async-errors": "^3.1.1",
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13"
   }
 }

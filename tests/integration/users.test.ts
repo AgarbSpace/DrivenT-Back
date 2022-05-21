@@ -22,13 +22,19 @@ describe('POST /users', () => {
     expect(response.status).toBe(httpStatus.BAD_REQUEST);
   });
 
+  it('should respond with status 400 when body is not valid', async () => {
+    const invalidBody = { [faker.lorem.word()]: faker.lorem.word() };
+
+    const response = await server.post('/users').send(invalidBody);
+
+    expect(response.status).toBe(httpStatus.BAD_REQUEST);
+  });
+
   describe('when body is valid', () => {
-    function generateValidBody() {
-      return {
-        email: faker.internet.email(),
-        password: faker.internet.password(6),
-      };
-    }
+    const generateValidBody = () => ({
+      email: faker.internet.email(),
+      password: faker.internet.password(6),
+    });
 
     it('should respond with status 409 when there is a user with given email', async () => {
       const body = generateValidBody();
