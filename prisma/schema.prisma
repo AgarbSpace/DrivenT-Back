@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Session   Session[]
+  id         Int          @id @default(autoincrement())
+  email      String       @unique @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Session    Session[]
+  Enrollment Enrollment[]
 }
 
 model Session {
@@ -37,4 +38,32 @@ model Event {
   endsAt             DateTime
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+}
+
+model Enrollment {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  cpf       String    @db.VarChar(255)
+  birthday  DateTime
+  phone     String    @db.VarChar(255)
+  userId    Int
+  User      User      @relation(fields: [userId], references: [id])
+  Address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Address {
+  id            Int        @id @default(autoincrement())
+  cep           String     @db.VarChar(255)
+  street        String     @db.VarChar(255)
+  city          String     @db.VarChar(255)
+  state         String     @db.VarChar(255)
+  number        String     @db.VarChar(255)
+  neighborhood  String     @db.VarChar(255)
+  addressDetail String?    @db.VarChar(255)
+  enrollmentId  Int
+  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
