@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 import { duplicatedEmailError } from './errors';
 import { prisma } from '@/config';
-import { User } from '@/entities';
 
 export async function createUser(params: CreateParams): Promise<User> {
   const userWithSameEmail = await prisma.user.findUnique({

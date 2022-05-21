@@ -27,3 +27,14 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Event {
+  id                 Int      @id @default(autoincrement())
+  title              String   @db.VarChar(255)
+  backgroundImageUrl String   @db.VarChar(255)
+  logoImageUrl       String   @db.VarChar(255)
+  startsAt           DateTime
+  endsAt             DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

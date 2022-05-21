@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { invalidCredentialsError } from './errors';
 import { prisma } from '@/config';
 
-export async function signIn(params: AuthenticationParams) {
+export async function signIn(params: AuthenticationParams): Promise<AuthenticationResult> {
   const { email, password } = params;
 
   const user = await prisma.user.findUnique({
@@ -37,4 +37,12 @@ export async function signIn(params: AuthenticationParams) {
 type AuthenticationParams = {
   email: string;
   password: string;
+};
+
+type AuthenticationResult = {
+  user: {
+    id: number;
+    email: string;
+  };
+  token: string;
 };
