@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import httpStatus from 'http-status';
 import { faker } from '@faker-js/faker';
 
-import { createUser } from '../seeds';
+import { createUser } from '../factories';
 import { cleanDb } from '../helpers';
 import app, { init } from '@/app';
 import { duplicatedEmailError } from '@/services/users-service';

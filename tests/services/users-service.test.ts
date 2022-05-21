@@ -2,7 +2,7 @@ import faker from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 
 import { cleanDb } from '../helpers';
-import { createUser as createUserSeed } from '../seeds';
+import { createUser as createUserSeed } from '../factories';
 import { duplicatedEmailError } from '@/services/users-service';
 import { init } from '@/app';
 import { createUser } from '@/services';
