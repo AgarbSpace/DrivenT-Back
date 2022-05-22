@@ -1,9 +1,15 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
-import { createUser } from '@/services';
+import { createUser, isCurrentEventActive } from '@/services';
+import { cannotEnrollBeforeStartDateError } from '@/errors';
 
 export async function usersPost(req: Request, res: Response) {
   const { email, password } = req.body;
+
+  const canEnroll = await isCurrentEventActive();
+  if (!canEnroll) {
+    return res.status(httpStatus.BAD_REQUEST).send(cannotEnrollBeforeStartDateError());
+  }
 
   try {
     const user = await createUser({ email, password });

@@ -1,8 +1,9 @@
 import supertest from 'supertest';
 import httpStatus from 'http-status';
 import { faker } from '@faker-js/faker';
+import dayjs from 'dayjs';
 
-import { createUser } from '../factories';
+import { createEvent, createUser } from '../factories';
 import { cleanDb } from '../helpers';
 import app, { init } from '@/app';
 import { duplicatedEmailError } from '@/services/users-service';
@@ -36,17 +37,39 @@ describe('POST /users', () => {
       password: faker.internet.password(6),
     });
 
-    it('should respond with status 409 when there is a user with given email', async () => {
+    it('should respond with status 400 when there is no event', async () => {
       const body = generateValidBody();
-      await createUser(body);
 
       const response = await server.post('/users').send(body);
 
-      expect(response.status).toBe(httpStatus.CONFLICT);
-      expect(response.body).toEqual(duplicatedEmailError());
+      expect(response.status).toBe(httpStatus.BAD_REQUEST);
     });
 
-    describe('when create user', () => {
+    it('should respond with status 400 when current event did not started yet', async () => {
+      const event = await createEvent({ startsAt: dayjs().add(1, 'day').toDate() });
+      const body = generateValidBody();
+
+      const response = await server.post('/users').send(body).query({ eventId: event.id });
+
+      expect(response.status).toBe(httpStatus.BAD_REQUEST);
+    });
+
+    describe('when event started', () => {
+      beforeAll(async () => {
+        await prisma.event.deleteMany({});
+        await createEvent();
+      });
+
+      it('should respond with status 409 when there is an user with given email', async () => {
+        const body = generateValidBody();
+        await createUser(body);
+
+        const response = await server.post('/users').send(body);
+
+        expect(response.status).toBe(httpStatus.CONFLICT);
+        expect(response.body).toEqual(duplicatedEmailError());
+      });
+
       it('should respond with status 201 and create user when given email is unique', async () => {
         const body = generateValidBody();
 
