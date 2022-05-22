@@ -24,6 +24,6 @@ services:
         max-size: '10m'
         max-file: '5'
     working_dir: /usr/src/drivent
-    command: npm dev
+    command: npm run dev
     environment:
       NODE_ENV: development
