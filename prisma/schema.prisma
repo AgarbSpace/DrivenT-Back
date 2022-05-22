@@ -46,7 +46,7 @@ model Enrollment {
   cpf       String    @db.VarChar(255)
   birthday  DateTime
   phone     String    @db.VarChar(255)
-  userId    Int
+  userId    Int       @unique
   User      User      @relation(fields: [userId], references: [id])
   Address   Address[]
   createdAt DateTime  @default(now())

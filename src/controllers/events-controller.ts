@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { notFoundError } from '@/errors';
-import { getFirst } from '@/services';
+import { getFirstEvent } from '@/services';
 
-export async function getDefault(_req: Request, res: Response) {
-  const event = await getFirst();
+export async function getDefaultEvent(_req: Request, res: Response) {
+  const event = await getFirstEvent();
   if (!event) {
     return res.status(httpStatus.NOT_FOUND).send(notFoundError());
   }

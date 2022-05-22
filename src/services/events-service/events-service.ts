@@ -1,7 +1,7 @@
 import { Event } from '@prisma/client';
 import { prisma } from '@/config';
 
-export async function getFirst(): Promise<GetFirstEventResult> {
+export async function getFirstEvent(): Promise<GetFirstEventResult> {
   const event = await prisma.event.findFirst();
   if (!event) return;
 
