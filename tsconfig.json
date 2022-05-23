@@ -12,12 +12,11 @@
     "paths": {
       "@/*": ["*"]
     },
-    "typeRoots": ["./node_modules/@types"]
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ]
   },
-  "plugins": [
-    {
-      "transform": "typescript-transform-paths"
-    }
-  ],
-  "include": ["src/**/*", "tests/**/*"]
+  "include": ["src"]
 }
