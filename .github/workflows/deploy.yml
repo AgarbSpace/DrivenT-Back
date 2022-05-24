@@ -6,7 +6,7 @@ on:
 name: Build and Deploy
 jobs:
   build:
-    runs-on: drivent-vm1
+    runs-on: drivent
     timeout-minutes: 20
     steps:
       - name: Checkout
