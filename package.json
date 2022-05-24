@@ -2,11 +2,13 @@
   "name": "drint.t-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "ttsc -p tsconfig.build.json",
     "prepare": "husky install",
+    "start": "node dist/server.js",
+    "migration:run": "prisma migrate deploy",
     "lint:staged": "lint-staged",
     "test": "jest --passWithNoTests --runInBand",
     "test:docker": "npm run test:compose -- up",
@@ -26,7 +28,11 @@
     "dev:prisma:studio": "npm run dev:load-envs prisma studio",
     "dev:seed": "prisma db seed",
     "dev:docker": "npm run dev:compose -- up",
-    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
+    "ci:build": "docker-compose -f docker-compose.test.yml build",
+    "ci:test": "docker-compose -f docker-compose.test.yml run drivent-test bash -c 'npm run test:migration:run && npm test'",
+    "prod:build": "docker-compose build",
+    "prod:start": "docker-compose up"
   },
   "keywords": [
     "driven.t",
@@ -69,10 +75,10 @@
     "supertest": "^6.2.3",
     "ts-jest": "^26.5.5",
     "ts-node": "^10.7.0",
-    "tsconfig-paths": "^3.9.0",
-    "ttypescript": "^1.5.12",
-    "typescript": "^4.2.4",
-    "typescript-transform-paths": "^2.2.3"
+    "tsconfig-paths": "3.9.0",
+    "ttypescript": "1.5.12",
+    "typescript": "4.2.4",
+    "typescript-transform-paths": "2.2.3"
   },
   "dependencies": {
     "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",

@@ -24,6 +24,11 @@ services:
         max-size: '10m'
         max-file: '5'
     working_dir: /usr/src/drivent
-    command: npm run dev
+    command: bash -c "npx prisma generate && npm run dev"
     environment:
       NODE_ENV: development
+    volumes:
+      - .:/usr/src/drivent
+      - node_modules:/usr/src/drivent/node_modules
+volumes:
+  node_modules:

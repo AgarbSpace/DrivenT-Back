@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Build and Deploy
+jobs:
+  build:
+    runs-on: drivent-vm1
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Environment variables setup
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "$SECRETS" > ./.github/workflows/scripts/env.json
+          node ./.github/workflows/scripts/generate-env-file.js
+        env:
+          SECRETS: ${{ toJson(secrets) }}
+
+      - name: Build
+        run: npm run prod:build
+
+      - name: Run
+        run: npm run prod:start

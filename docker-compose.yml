@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  drivent-production:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: drivent-back
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
+    working_dir: /usr/src/drivent
+    command: bash -c "npm run migration:run && npm run start"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}

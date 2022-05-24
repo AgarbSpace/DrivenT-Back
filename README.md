@@ -119,3 +119,12 @@ Set `POSTGRES_HOST` to `drivent-postgres-development` for `.env.development` and
 - Running application locally (node) but postgres is running inside docker:
 
 Set `POSTGRES_HOST` to `localhost` for `.env.development` and `localhost` for `.env.test` file. Docker compose is configured to expose postgres container to your localhost.
+
+## What to do when add new ENV VARIABLES
+
+There are several things you need to do when you add new ENV VARIABLES:
+- Add them to `.env.example` file
+- Add them to your local `.env.development` and `.env.test` files
+- Add them to your docker-compose.yml file (just the name, not the value). Only envs listed in the environment section will be exposed to your docker container.
+- Add them (prod version) to your github repo secrets. They will be used to generate the `.env` file on deploy.
+- Add them (prod version) to test.yml file on .github/workflows/test.yml.
