@@ -30,9 +30,7 @@
     "dev:docker": "npm run dev:compose -- up",
     "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "ci:build": "docker-compose -f docker-compose.test.yml build",
-    "ci:test": "docker-compose -f docker-compose.test.yml run drivent-test bash -c 'npm run test:migration:run && npm test'",
-    "prod:build": "docker-compose build",
-    "prod:start": "docker-compose up"
+    "ci:test": "docker-compose -f docker-compose.test.yml run drivent-test bash -c 'npm run test:migration:run && npm test'"
   },
   "keywords": [
     "driven.t",
