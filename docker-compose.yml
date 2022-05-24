@@ -12,6 +12,7 @@ services:
         max-file: '5'
     working_dir: /usr/src/drivent
     command: bash -c "npm run migration:run && npm run start"
+    restart: always
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
