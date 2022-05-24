@@ -24,6 +24,6 @@ services:
         max-size: '10m'
         max-file: '5'
     working_dir: /usr/src/drivent
-    command: npm test
+    command: bash -c "npm test:migration:run && npm test"
     environment:
       NODE_ENV: test
