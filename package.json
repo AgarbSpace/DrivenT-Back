@@ -8,6 +8,7 @@
     "build": "ttsc -p tsconfig.build.json",
     "prepare": "husky install",
     "start": "node dist/server.js",
+    "migration:run": "prisma migrate deploy",
     "lint:staged": "lint-staged",
     "test": "jest --passWithNoTests --runInBand",
     "test:docker": "npm run test:compose -- up",
@@ -27,7 +28,11 @@
     "dev:prisma:studio": "npm run dev:load-envs prisma studio",
     "dev:seed": "prisma db seed",
     "dev:docker": "npm run dev:compose -- up",
-    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
+    "ci:build": "docker-compose -f docker-compose.test.yml build",
+    "ci:test": "docker-compose -f docker-compose.test.yml up",
+    "prod:build": "docker-compose build",
+    "prod:start": "docker-compose up"
   },
   "keywords": [
     "driven.t",
@@ -81,6 +86,7 @@
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.2",
+    "dotenv": "^16.0.1",
     "dotenv-expand": "^8.0.3",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
