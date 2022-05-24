@@ -7,9 +7,9 @@ describe('createEnrollmentSchema', () => {
     name: faker.name.findName(),
     cpf: generateCPF(),
     birthday: faker.date.past().toISOString(),
-    phone: '21989999999',
+    phone: '(21) 98999-9999',
     address: {
-      cep: '90830563',
+      cep: '90830-563',
       street: faker.address.streetName(),
       city: faker.address.city(),
       number: faker.datatype.number().toString(),
@@ -113,9 +113,9 @@ describe('createEnrollmentSchema', () => {
       expect(error).toBeDefined();
     });
 
-    it('should return error if phone is masked', () => {
+    it('should return error if phone is not masked', () => {
       const input = generateValidInput();
-      input.phone = '(12) 99988-7766';
+      input.phone = '12999887766';
 
       const { error } = createEnrollmentSchema.validate(input);
 
@@ -152,9 +152,9 @@ describe('createEnrollmentSchema', () => {
         expect(error).toBeDefined();
       });
 
-      it('should return error if cep is masked', () => {
+      it('should return error if cep is not masked', () => {
         const input = generateValidInput();
-        input.address.cep = '12345-678';
+        input.address.cep = '12345678';
 
         const { error } = createEnrollmentSchema.validate(input);
 
