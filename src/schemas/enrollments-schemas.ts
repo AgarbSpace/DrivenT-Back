@@ -3,9 +3,9 @@ import { isValidCPF, isValidCEP, isValidMobilePhone, getStates } from '@brazilia
 
 const cpfValidationSchema = Joi.string().length(11).custom(joiCpfValidation).required();
 
-const cepValidationSchema = Joi.string().length(8).custom(JoiCepValidation).required();
+const cepValidationSchema = Joi.string().length(9).custom(JoiCepValidation).required();
 
-const mobilePhoneValidationSchema = Joi.string().length(11).custom(joiMobilePhoneValidation).required();
+const mobilePhoneValidationSchema = Joi.string().min(14).max(15).custom(joiMobilePhoneValidation).required();
 
 export const createEnrollmentSchema = Joi.object({
   name: Joi.string().min(3).required(),
