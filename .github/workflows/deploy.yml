@@ -16,7 +16,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           echo "$SECRETS" > ./.github/workflows/scripts/env.json
-          docker run -v $(GITHUB_WORKSPACE)/.github/workflows/scripts:/usr/app node:16.15-alpine sh -c "cd /usr/app && node generate-env-file.js"
+          docker run -v $GITHUB_WORKSPACE/.github/workflows/scripts:/usr/app node:16.15-alpine sh -c "cd /usr/app && node generate-env-file.js"
         env:
           SECRETS: ${{ toJson(secrets) }}
 
