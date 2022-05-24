@@ -17,4 +17,6 @@ WORKDIR /usr/src/drivent
 COPY ./package*.json ./
 COPY ./prisma ./prisma
 RUN npm install --only=production --ignore-scripts
+RUN npm i -g bcrypt
+RUN npm link bcrypt
 COPY --from=build /usr/src/drivent/dist ./dist
