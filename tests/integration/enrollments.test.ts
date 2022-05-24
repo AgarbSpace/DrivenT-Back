@@ -126,9 +126,9 @@ describe('POST /enrollments', () => {
         name: faker.name.findName(),
         cpf: generateCPF(),
         birthday: faker.date.past().toISOString(),
-        phone: '21989999999',
+        phone: '(21) 98999-9999',
         address: {
-          cep: '90830563',
+          cep: '90830-563',
           street: faker.address.streetName(),
           city: faker.address.city(),
           number: faker.datatype.number().toString(),
