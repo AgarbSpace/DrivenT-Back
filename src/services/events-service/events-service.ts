@@ -1,25 +1,20 @@
-import dayjs from 'dayjs';
+import { notFoundError } from '@/errors';
+import eventRepository from '@/repositories/event-repository';
+import { exclude } from '@/utils/prisma-utils';
 import { Event } from '@prisma/client';
-import { prisma } from '@/config';
+import dayjs from 'dayjs';
 
-export async function getFirstEvent(): Promise<GetFirstEventResult> {
-  const event = await prisma.event.findFirst();
-  if (!event) return;
+async function getFirstEvent(): Promise<GetFirstEventResult> {
+  const event = await eventRepository.findFirst();
+  if (!event) throw notFoundError();
 
-  return {
-    id: event.id,
-    title: event.title,
-    backgroundImageUrl: event.backgroundImageUrl,
-    logoImageUrl: event.logoImageUrl,
-    startsAt: event.startsAt,
-    endsAt: event.endsAt,
-  };
+  return exclude(event, 'createdAt', 'updatedAt');
 }
 
 export type GetFirstEventResult = Omit<Event, 'createdAt' | 'updatedAt'>;
 
-export async function isCurrentEventActive(): Promise<boolean> {
-  const event = await getFirstEvent();
+async function isCurrentEventActive(): Promise<boolean> {
+  const event = await eventRepository.findFirst();
   if (!event) return false;
 
   const now = dayjs();
@@ -28,3 +23,10 @@ export async function isCurrentEventActive(): Promise<boolean> {
 
   return now.isAfter(eventStartsAt) && now.isBefore(eventEndsAt);
 }
+
+const eventsService = {
+  getFirstEvent,
+  isCurrentEventActive,
+};
+
+export default eventsService;

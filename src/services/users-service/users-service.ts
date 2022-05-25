@@ -1,30 +1,34 @@
-import bcrypt from 'bcrypt';
+import { cannotEnrollBeforeStartDateError } from '@/errors';
+import userRepository from '@/repositories/user-repository';
 import { User } from '@prisma/client';
-
+import bcrypt from 'bcrypt';
+import eventsService from '../events-service/events-service';
 import { duplicatedEmailError } from './errors';
-import { prisma } from '@/config';
 
-export async function createUser(params: CreateParams): Promise<User> {
-  const userWithSameEmail = await prisma.user.findUnique({
-    where: {
-      email: params.email,
-    },
-  });
+export async function createUser({ email, password }: CreateUserParams): Promise<User> {
+  await canEnrollOrFail();
 
-  if (userWithSameEmail) {
-    throw duplicatedEmailError();
-  }
+  await validateUniqueEmailOrFail(email);
 
-  const hashedPassword = await bcrypt.hash(params.password, 12);
-  return prisma.user.create({
-    data: {
-      email: params.email,
-      password: hashedPassword,
-    },
+  const hashedPassword = await bcrypt.hash(password, 12);
+  return userRepository.create({
+    email,
+    password: hashedPassword,
   });
 }
 
-type CreateParams = {
-  email: string;
-  password: string;
-};
+async function validateUniqueEmailOrFail(email: string) {
+  const userWithSameEmail = await userRepository.findByEmail(email);
+  if (userWithSameEmail) {
+    throw duplicatedEmailError();
+  }
+}
+
+async function canEnrollOrFail() {
+  const canEnroll = await eventsService.isCurrentEventActive();
+  if (!canEnroll) {
+    throw cannotEnrollBeforeStartDateError();
+  }
+}
+
+type CreateUserParams = Pick<User, 'email' | 'password'>;

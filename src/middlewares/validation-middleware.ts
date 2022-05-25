@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { invalidDataError } from '@/errors';
+import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { ObjectSchema } from 'joi';
-import { invalidDataError } from '@/errors';
 
-export function validateBody(schema: ObjectSchema): ValidationMiddleware {
+export function validateBody<T>(schema: ObjectSchema<T>): ValidationMiddleware {
   return validate(schema, 'body');
 }
 
-export function validateParams(schema: ObjectSchema): ValidationMiddleware {
+export function validateParams<T>(schema: ObjectSchema<T>): ValidationMiddleware {
   return validate(schema, 'params');
 }
 

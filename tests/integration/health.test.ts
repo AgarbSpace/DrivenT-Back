@@ -1,7 +1,6 @@
-import supertest from 'supertest';
-import httpStatus from 'http-status';
-
 import app, { init } from '@/app';
+import httpStatus from 'http-status';
+import supertest from 'supertest';
 
 beforeAll(async () => {
   await init();

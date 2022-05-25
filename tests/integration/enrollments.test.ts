@@ -1,14 +1,13 @@
-import supertest from 'supertest';
-import httpStatus from 'http-status';
-import faker from '@faker-js/faker';
-import * as jwt from 'jsonwebtoken';
-import { generateCPF, getStates } from '@brazilian-utils/brazilian-utils';
-import dayjs from 'dayjs';
-
-import { cleanDb, generateValidToken } from '../helpers';
-import { createUser, createEnrollmentWithAddress } from '../factories';
 import app, { init } from '@/app';
 import { prisma } from '@/config';
+import { generateCPF, getStates } from '@brazilian-utils/brazilian-utils';
+import faker from '@faker-js/faker';
+import dayjs from 'dayjs';
+import httpStatus from 'http-status';
+import * as jwt from 'jsonwebtoken';
+import supertest from 'supertest';
+import { createEnrollmentWithAddress, createUser } from '../factories';
+import { cleanDb, generateValidToken } from '../helpers';
 
 beforeAll(async () => {
   await init();
@@ -47,7 +46,7 @@ describe('GET /enrollments', () => {
 
       const response = await server.get('/enrollments').set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(httpStatus.NO_CONTENT);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
 
     it('should respond with status 200 and enrollment data with address when there is a enrollment for given user', async () => {
@@ -151,14 +150,16 @@ describe('POST /enrollments', () => {
 
       it('should respond with status 200 and update enrollment if there is one already', async () => {
         const user = await createUser();
-        await createEnrollmentWithAddress(user);
+        const enrollment = await createEnrollmentWithAddress(user);
         const body = generateValidBody();
         const token = await generateValidToken(user);
 
         const response = await server.post('/enrollments').set('Authorization', `Bearer ${token}`).send(body);
 
         expect(response.status).toBe(httpStatus.OK);
-        const updatedEnrollment = await prisma.enrollment.findFirst({ where: { userId: user.id } });
+        const updatedEnrollment = await prisma.enrollment.findUnique({ where: { userId: user.id } });
+        const addresses = await prisma.address.findMany({ where: { enrollmentId: enrollment.id } });
+        expect(addresses.length).toEqual(1);
         expect(updatedEnrollment).toBeDefined();
         expect(updatedEnrollment).toEqual(
           expect.objectContaining({

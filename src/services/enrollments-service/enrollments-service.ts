@@ -1,84 +1,56 @@
-import { prisma } from '@/config';
+import { notFoundError } from '@/errors';
+import addressRepository, { CreateAddressParams } from '@/repositories/address-repository';
+import enrollmentRepository, { CreateEnrollmentParams } from '@/repositories/enrollment-repository';
+import { exclude } from '@/utils/prisma-utils';
+import { Address, Enrollment } from '@prisma/client';
 
-export async function getOneWithAddressByUserId(userId: number) {
-  const enrollmentWithAddress = await prisma.enrollment.findFirst({
-    where: { userId },
-    include: {
-      Address: true,
-    },
-  });
+async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
+  const enrollmentWithAddress = await enrollmentRepository.findWithAddressByUserId(userId);
 
-  if (!enrollmentWithAddress) return undefined;
+  if (!enrollmentWithAddress) throw notFoundError();
 
-  const firstAddress = enrollmentWithAddress.Address[0];
-  const address = firstAddress
-    ? {
-        id: firstAddress.id,
-        cep: firstAddress.cep,
-        street: firstAddress.street,
-        city: firstAddress.city,
-        state: firstAddress.state,
-        number: firstAddress.number,
-        neighborhood: firstAddress.neighborhood,
-        addressDetail: firstAddress.addressDetail,
-      }
-    : null;
+  const [firstAddress] = enrollmentWithAddress.Address;
+  const address = getFirstAddress(firstAddress);
 
   return {
-    id: enrollmentWithAddress.id,
-    name: enrollmentWithAddress.name,
-    cpf: enrollmentWithAddress.cpf,
-    birthday: enrollmentWithAddress.birthday,
-    phone: enrollmentWithAddress.phone,
+    ...exclude(enrollmentWithAddress, 'userId', 'createdAt', 'updatedAt', 'Address'),
     ...(!!address && { address }),
   };
 }
 
-export async function createOrUpdateEnrollmentWithAddress(params: CreateEnrollmentParams) {
-  const createOrUpdateParams = {
-    name: params.name,
-    cpf: params.cpf,
-    birthday: params.birthday,
-    phone: params.phone,
-    userId: params.userId,
-    Address: {
-      create: {
-        cep: params.address.cep,
-        street: params.address.street,
-        city: params.address.city,
-        number: params.address.number,
-        state: params.address.state,
-        neighborhood: params.address.neighborhood,
-        ...(params.address.addressDetail && { addressDetail: params.address.addressDetail }),
-      },
-    },
-  };
+type GetOneWithAddressByUserIdResult = Omit<Enrollment, 'userId' | 'createdAt' | 'updatedAt'>;
 
-  await prisma.enrollment.upsert({
-    where: {
-      userId: params.userId,
-    },
-    create: createOrUpdateParams,
-    update: createOrUpdateParams,
-    include: {
-      Address: true,
-    },
-  });
+function getFirstAddress(firstAddress: Address): GetAddressResult {
+  if (!firstAddress) return null;
+
+  return exclude(firstAddress, 'createdAt', 'updatedAt', 'enrollmentId');
 }
 
-export type CreateEnrollmentParams = {
-  name: string;
-  cpf: string;
-  birthday: string;
-  phone: string;
-  userId: number;
-  address: {
-    cep: string;
-    street: string;
-    city: string;
-    number: string;
-    state: string;
-    neighborhood: string;
-    addressDetail?: string;
+type GetAddressResult = Omit<Address, 'createdAt' | 'updatedAt' | 'enrollmentId'>;
+
+async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollmentWithAddress) {
+  const enrollment = exclude(params, 'address');
+  const address = getAddressForUpsert(params.address);
+
+  const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, 'userId'));
+
+  await addressRepository.upsert(newEnrollment.id, address, address);
+}
+
+function getAddressForUpsert(address: CreateAddressParams) {
+  return {
+    ...address,
+    ...(address?.addressDetail && { addressDetail: address.addressDetail }),
   };
+}
+
+export type CreateOrUpdateEnrollmentWithAddress = CreateEnrollmentParams & {
+  address: CreateAddressParams;
 };
+
+const enrollmentsService = {
+  getOneWithAddressByUserId,
+  createOrUpdateEnrollmentWithAddress,
+};
+
+export default enrollmentsService;

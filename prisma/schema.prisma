@@ -62,7 +62,7 @@ model Address {
   number        String     @db.VarChar(255)
   neighborhood  String     @db.VarChar(255)
   addressDetail String?    @db.VarChar(255)
-  enrollmentId  Int
+  enrollmentId  Int        @unique
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

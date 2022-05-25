@@ -1,13 +1,12 @@
-import supertest from 'supertest';
-import httpStatus from 'http-status';
+import app, { init } from '@/app';
+import { prisma } from '@/config';
+import { duplicatedEmailError } from '@/services/users-service';
 import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
-
+import httpStatus from 'http-status';
+import supertest from 'supertest';
 import { createEvent, createUser } from '../factories';
 import { cleanDb } from '../helpers';
-import app, { init } from '@/app';
-import { duplicatedEmailError } from '@/services/users-service';
-import { prisma } from '@/config';
 
 beforeAll(async () => {
   await init();

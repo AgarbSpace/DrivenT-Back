@@ -1,12 +1,11 @@
+import { init } from '@/app';
+import { prisma } from '@/config';
+import { createUser } from '@/services';
+import { duplicatedEmailError } from '@/services/users-service';
 import faker from '@faker-js/faker';
 import bcrypt from 'bcrypt';
-
-import { cleanDb } from '../helpers';
 import { createUser as createUserSeed } from '../factories';
-import { duplicatedEmailError } from '@/services/users-service';
-import { init } from '@/app';
-import { createUser } from '@/services';
-import { prisma } from '@/config';
+import { cleanDb } from '../helpers';
 
 beforeAll(async () => {
   await init();

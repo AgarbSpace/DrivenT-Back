@@ -1,7 +1,8 @@
-version: '3.8'
+version: '3'
 services:
   drivent-postgres-development:
     image: postgres:13-alpine
+    container_name: drivent-postgres-development
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -9,7 +10,7 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - ~/data/drivent/postgres-development:/var/lib/postgresql/data
+      - drivent-postgres-data:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
   drivent-development:
     build:
@@ -29,6 +30,6 @@ services:
       NODE_ENV: development
     volumes:
       - .:/usr/src/drivent
-      - node_modules:/usr/src/drivent/node_modules
+      - /usr/src/drivent/node_modules
 volumes:
-  node_modules:
+  drivent-postgres-data:
