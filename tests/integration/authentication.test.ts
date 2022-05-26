@@ -1,10 +1,9 @@
-import supertest from 'supertest';
-import httpStatus from 'http-status';
-import faker from '@faker-js/faker';
-
-import { cleanDb } from '../helpers';
-import { createUser } from '../factories';
 import app, { init } from '@/app';
+import faker from '@faker-js/faker';
+import httpStatus from 'http-status';
+import supertest from 'supertest';
+import { createUser } from '../factories';
+import { cleanDb } from '../helpers';
 
 beforeAll(async () => {
   await init();

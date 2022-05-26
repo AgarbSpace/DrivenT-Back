@@ -1,10 +1,9 @@
-import faker from '@faker-js/faker';
-
-import { cleanDb } from '../helpers';
-import { createUser } from '../factories';
-import { invalidCredentialsError, signIn } from '@/services';
 import { init } from '@/app';
 import { prisma } from '@/config';
+import authenticationService, { invalidCredentialsError } from '@/services/authentication-service';
+import faker from '@faker-js/faker';
+import { createUser } from '../factories';
+import { cleanDb } from '../helpers';
 
 beforeAll(async () => {
   await init();
@@ -21,7 +20,7 @@ describe('signIn', () => {
     const params = generateParams();
 
     try {
-      await signIn(params);
+      await authenticationService.signIn(params);
       fail('should throw InvalidCredentialError');
     } catch (error) {
       expect(error).toEqual(invalidCredentialsError());
@@ -36,7 +35,7 @@ describe('signIn', () => {
     });
 
     try {
-      await signIn(params);
+      await authenticationService.signIn(params);
       fail('should throw InvalidCredentialError');
     } catch (error) {
       expect(error).toEqual(invalidCredentialsError());
@@ -48,7 +47,7 @@ describe('signIn', () => {
       const params = generateParams();
       const user = await createUser(params);
 
-      const { user: signInUser } = await signIn(params);
+      const { user: signInUser } = await authenticationService.signIn(params);
       expect(user).toEqual(
         expect.objectContaining({
           id: signInUser.id,
@@ -61,7 +60,7 @@ describe('signIn', () => {
       const params = generateParams();
       const user = await createUser(params);
 
-      const { token: createdSessionToken } = await signIn(params);
+      const { token: createdSessionToken } = await authenticationService.signIn(params);
 
       expect(createdSessionToken).toBeDefined();
       const session = await prisma.session.findFirst({
