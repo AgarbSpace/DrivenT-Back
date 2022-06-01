@@ -47,16 +47,18 @@ model Event {
 }
 
 model Enrollment {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  cpf       String    @db.VarChar(255)
-  birthday  DateTime
-  phone     String    @db.VarChar(255)
-  userId    Int       @unique
-  User      User      @relation(fields: [userId], references: [id])
-  Address   Address[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(255)
+  cpf            String           @db.VarChar(255)
+  birthday       DateTime
+  phone          String           @db.VarChar(255)
+  userId         Int              @unique
+  User           User             @relation(fields: [userId], references: [id])
+  Address        Address[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  EnrollmentType EnrollmentType[]
+  Room           Room[]
 
   @@map("enrollments")
 }
@@ -76,4 +78,58 @@ model Address {
   updatedAt     DateTime   @updatedAt
 
   @@map("addresses")
+}
+
+model Type {
+  id    Int      @id @default(autoincrement())
+  name  String?
+  hotel Boolean?
+
+  EnrollmentType EnrollmentType[]
+  @@map("type")
+}
+
+model EnrollmentType {
+  id Int @id @default(autoincrement())
+
+  enrollmentId Int        @unique
+  Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  typeId Int
+  Type   Type @relation(fields: [typeId], references: [id])
+
+  @@map("enrolmentType")
+}
+
+model Hotel {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  image String
+  Room  Room[]
+
+  @@map("hotels")
+}
+
+model Room {
+  id     Int    @id @default(autoincrement())
+  number String
+
+  hotelId Int
+  Hotel   Hotel @relation(fields: [hotelId], references: [id])
+
+  roomSizeId Int
+  RoomSize   RoomSize @relation(fields: [roomSizeId], references: [id])
+
+  enrollmentId Int        @unique
+  Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  @@map("rooms")
+}
+
+model RoomSize {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  beds Int
+  Room Room[]
+
+  @@map("roomSize")
 }

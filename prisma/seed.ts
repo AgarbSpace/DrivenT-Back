@@ -14,9 +14,20 @@ async function main() {
         endsAt: dayjs().add(21, 'days').toDate(),
       },
     });
+    console.log(event);
   }
 
-  console.log({ event });
+  let type = await prisma.type.findFirst();
+  if (!type) {
+    let result = await prisma.type.createMany({
+      data: [
+        { name: 'online', hotel: false },
+        { name: 'presencial', hotel: false },
+        { name: 'presencial', hotel: true },
+      ],
+    });
+    console.log(result);
+  }
 }
 
 main()
