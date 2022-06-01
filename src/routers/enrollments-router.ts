@@ -7,7 +7,7 @@ const enrollmentsRouter = Router();
 
 enrollmentsRouter
   .all('/*', authenticateToken)
-  .get('/enrollments', getEnrollmentByUser)
-  .post('/enrollments', validateBody(createEnrollmentSchema), postCreateOrUpdateEnrollment);
+  .get('/', getEnrollmentByUser)
+  .post('/', validateBody(createEnrollmentSchema), postCreateOrUpdateEnrollment);
 
 export { enrollmentsRouter };
