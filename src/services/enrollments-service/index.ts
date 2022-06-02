@@ -1,8 +1,11 @@
 import { notFoundError } from '@/errors';
 import addressRepository, { CreateAddressParams } from '@/repositories/address-repository';
-import enrollmentRepository, { CreateEnrollmentParams } from '@/repositories/enrollment-repository';
+import enrollmentRepository, {
+  CreateEnrollmentParams,
+  TypeOfEnrollmentAndUser,
+} from '@/repositories/enrollment-repository';
 import { exclude } from '@/utils/prisma-utils';
-import { Address, Enrollment } from '@prisma/client';
+import { Address, Enrollment, Type } from '@prisma/client';
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
   const enrollmentWithAddress = await enrollmentRepository.findWithAddressByUserId(userId);
@@ -44,6 +47,13 @@ function getAddressForUpsert(address: CreateAddressParams) {
   };
 }
 
+async function createTypeforEnrollment(params: TypeOfEnrollmentAndUser) {
+  const enrollment = await enrollmentRepository.findEnrollmentByUserId(params.userId);
+  const type = await enrollmentRepository.findTypeofEnrollment(params);
+
+  await enrollmentRepository.createTypeofEnrollment(enrollment.id, type.id);
+}
+
 export type CreateOrUpdateEnrollmentWithAddress = CreateEnrollmentParams & {
   address: CreateAddressParams;
 };
@@ -51,6 +61,7 @@ export type CreateOrUpdateEnrollmentWithAddress = CreateEnrollmentParams & {
 const enrollmentsService = {
   getOneWithAddressByUserId,
   createOrUpdateEnrollmentWithAddress,
+  createTypeforEnrollment,
 };
 
 export default enrollmentsService;
