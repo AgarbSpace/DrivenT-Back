@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint/no-namespace': 'off',
     'import/newline-after-import': ['error'],
     'lines-between-class-members': ['error', 'always'],
+    //    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
   },
   settings: {
     'import/parsers': {

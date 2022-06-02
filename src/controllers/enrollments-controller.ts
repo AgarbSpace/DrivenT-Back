@@ -19,3 +19,12 @@ export async function postCreateOrUpdateEnrollment(req: AuthenticatedRequest, re
 
   return res.sendStatus(httpStatus.OK);
 }
+
+export async function postTypeOfEnrollment(req: AuthenticatedRequest, res: Response) {
+  await enrollmentsService.createTypeforEnrollment({
+    ...req.body,
+    userId: req.userId,
+  });
+
+  return res.sendStatus(201);
+}
