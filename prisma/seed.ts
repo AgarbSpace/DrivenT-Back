@@ -28,6 +28,68 @@ async function main() {
     });
     console.log(result);
   }
+
+  let hotel = await prisma.hotel.findFirst();
+  if (!hotel) {
+    let result = await prisma.hotel.createMany({
+      data: [
+        {
+          name: 'Driven Resort',
+          image: 'https://drive.google.com/file/d/1wgAW4BXgcegX2YKZzaT2C7rYdEdIsTMI/view?usp=sharing',
+        },
+        {
+          name: 'Driven Palace',
+          image: 'https://drive.google.com/file/d/1gG1ttPHinSECt07J0rR_ec1vQRqfv3Fq/view?usp=sharing',
+        },
+        {
+          name: 'Driven World',
+          image: 'https://drive.google.com/file/d/1OmkKOtOp4ZzZCWgMJFztYxg-ofGzXoua/view?usp=sharing',
+        },
+      ],
+    });
+    console.log(result);
+  }
+
+  let room = await prisma.room.findFirst();
+  if (!room) {
+    let result = await prisma.room.createMany({
+      data: [
+        { number: '101', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '102', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '103', beds: 1, hotelId: 1, enrollmentId: null },
+        { number: '104', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '105', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '106', beds: 1, hotelId: 1, enrollmentId: null },
+        { number: '107', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '108', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '109', beds: 1, hotelId: 1, enrollmentId: null },
+        { number: '110', beds: 2, hotelId: 1, enrollmentId: null },
+
+        { number: '101', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '102', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '103', beds: 1, hotelId: 2, enrollmentId: null },
+        { number: '104', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '105', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '106', beds: 1, hotelId: 2, enrollmentId: null },
+        { number: '107', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '108', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '109', beds: 1, hotelId: 2, enrollmentId: null },
+        { number: '110', beds: 2, hotelId: 2, enrollmentId: null },
+
+        { number: '101', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '102', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '103', beds: 1, hotelId: 3, enrollmentId: null },
+        { number: '104', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '105', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '106', beds: 1, hotelId: 3, enrollmentId: null },
+        { number: '107', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '108', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '109', beds: 1, hotelId: 3, enrollmentId: null },
+        { number: '110', beds: 2, hotelId: 3, enrollmentId: null },
+      ],
+    });
+    console.log(result);
+  }
 }
 
 main()

@@ -113,23 +113,12 @@ model Hotel {
 model Room {
   id     Int    @id @default(autoincrement())
   number String
+  beds   Int
 
   hotelId Int
   Hotel   Hotel @relation(fields: [hotelId], references: [id])
 
-  roomSizeId Int
-  RoomSize   RoomSize @relation(fields: [roomSizeId], references: [id])
-
-  enrollmentId Int        @unique
-  Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollmentId Int?        @unique
+  Enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
   @@map("rooms")
-}
-
-model RoomSize {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  beds Int
-  Room Room[]
-
-  @@map("roomSize")
 }
