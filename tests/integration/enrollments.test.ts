@@ -63,6 +63,7 @@ describe('GET /enrollments', () => {
         cpf: enrollment.cpf,
         birthday: enrollment.birthday.toISOString(),
         phone: enrollment.phone,
+        bedId: null,
         address: {
           id: enrollment.Address[0].id,
           cep: enrollment.Address[0].cep,
