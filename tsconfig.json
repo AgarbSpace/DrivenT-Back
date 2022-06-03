@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "rootDirs": ["src", "tests"],
     "baseUrl": "src",
+    "typeRoots" : ["node_modules/@types", "src/images"],
     "paths": {
       "@/*": ["*"]
     },
@@ -18,5 +19,5 @@
       }
     ]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests",]
 }
