@@ -5,7 +5,7 @@ import hotelRepository from '@/repositories/hotels-repository';
 export type GetHotels = Omit<Hotel, 'id'>;
 export type GetRooms = Omit<Room, 'id'>;
 
-export type GetHotelsAndRooms = GetHotels & { Room: GetRooms };
+export type GetHotelsAndRooms = GetHotels & { Room: [GetRooms] };
 
 async function getHotels() {
   const hotels = await hotelRepository.findHotels();

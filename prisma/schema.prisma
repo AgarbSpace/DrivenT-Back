@@ -58,7 +58,9 @@ model Enrollment {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   EnrollmentType EnrollmentType[]
-  Room           Room[]
+  bedId          Int?             @unique
+  Beds           Beds?            @relation(fields: [bedId], references: [id])
+
 
   @@map("enrollments")
 }
@@ -113,12 +115,20 @@ model Hotel {
 model Room {
   id     Int    @id @default(autoincrement())
   number String
-  beds   Int
 
   hotelId Int
   Hotel   Hotel @relation(fields: [hotelId], references: [id])
 
-  enrollmentId Int?        @unique
-  Enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
+  Beds Beds[]
   @@map("rooms")
+}
+
+model Beds {
+  id         Int          @id @default(autoincrement())
+  occupied   Boolean      @default(false)
+  roomId     Int
+  Room       Room         @relation(fields: [roomId], references: [id])
+  Enrollment Enrollment[]
+
+  @@map("beds")
 }
