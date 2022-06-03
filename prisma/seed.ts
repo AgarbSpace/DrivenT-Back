@@ -64,6 +64,8 @@ async function main() {
         { number: '108', beds: 2, hotelId: 1, enrollmentId: null },
         { number: '109', beds: 1, hotelId: 1, enrollmentId: null },
         { number: '110', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '111', beds: 2, hotelId: 1, enrollmentId: null },
+        { number: '112', beds: 1, hotelId: 1, enrollmentId: null },
 
         { number: '101', beds: 2, hotelId: 2, enrollmentId: null },
         { number: '102', beds: 2, hotelId: 2, enrollmentId: null },
@@ -75,6 +77,8 @@ async function main() {
         { number: '108', beds: 2, hotelId: 2, enrollmentId: null },
         { number: '109', beds: 1, hotelId: 2, enrollmentId: null },
         { number: '110', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '111', beds: 2, hotelId: 2, enrollmentId: null },
+        { number: '112', beds: 1, hotelId: 2, enrollmentId: null },
 
         { number: '101', beds: 2, hotelId: 3, enrollmentId: null },
         { number: '102', beds: 2, hotelId: 3, enrollmentId: null },
@@ -86,6 +90,8 @@ async function main() {
         { number: '108', beds: 2, hotelId: 3, enrollmentId: null },
         { number: '109', beds: 1, hotelId: 3, enrollmentId: null },
         { number: '110', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '111', beds: 2, hotelId: 3, enrollmentId: null },
+        { number: '112', beds: 1, hotelId: 3, enrollmentId: null },
       ],
     });
     console.log(result);
