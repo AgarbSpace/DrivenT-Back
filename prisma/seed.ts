@@ -21,9 +21,9 @@ async function main() {
   if (!type) {
     let result = await prisma.type.createMany({
       data: [
-        { name: 'online', hotel: false },
-        { name: 'presencial', hotel: false },
-        { name: 'presencial', hotel: true },
+        { name: 'Online', hotel: false },
+        { name: 'Presencial', hotel: false },
+        { name: 'Presencial', hotel: true },
       ],
     });
     console.log(result);

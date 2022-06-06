@@ -5,7 +5,7 @@ import enrollmentRepository, {
   TypeOfEnrollmentAndUser,
 } from '@/repositories/enrollment-repository';
 import { exclude } from '@/utils/prisma-utils';
-import { Address, Enrollment, Type } from '@prisma/client';
+import { Address, Enrollment } from '@prisma/client';
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
   const enrollmentWithAddress = await enrollmentRepository.findWithAddressByUserId(userId);
