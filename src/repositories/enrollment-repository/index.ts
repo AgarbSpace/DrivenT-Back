@@ -42,6 +42,12 @@ async function createTypeofEnrollment(enrollmentId: number, typeId: number) {
   });
 }
 
+async function getEnrollmentByUserId(enrollmentId: number) {
+  return prisma.enrollmentType.findFirst({
+    where: { enrollmentId },
+  });
+}
+
 export type TypeOfEnrollmentAndUser = Omit<Type, 'id'> & { userId: number };
 export type CreateEnrollmentParams = Omit<Enrollment, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateEnrollmentParams = Omit<CreateEnrollmentParams, 'userId'>;
@@ -52,6 +58,7 @@ const enrollmentRepository = {
   findEnrollmentByUserId,
   findTypeofEnrollment,
   createTypeofEnrollment,
+  getEnrollmentByUserId,
 };
 
 export default enrollmentRepository;
