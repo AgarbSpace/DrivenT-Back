@@ -54,6 +54,12 @@ async function createTypeforEnrollment(params: TypeOfEnrollmentAndUser) {
   await enrollmentRepository.createTypeofEnrollment(enrollment.id, type.id);
 }
 
+async function getTypeofEnrollment(enrollmentId: number) {
+  const enrollment = await enrollmentRepository.getEnrollmentByUserId(enrollmentId);
+
+  return enrollment;
+}
+
 export type CreateOrUpdateEnrollmentWithAddress = CreateEnrollmentParams & {
   address: CreateAddressParams;
 };
@@ -62,6 +68,7 @@ const enrollmentsService = {
   getOneWithAddressByUserId,
   createOrUpdateEnrollmentWithAddress,
   createTypeforEnrollment,
+  getTypeofEnrollment,
 };
 
 export default enrollmentsService;

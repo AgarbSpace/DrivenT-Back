@@ -28,3 +28,11 @@ export async function postTypeOfEnrollment(req: AuthenticatedRequest, res: Respo
 
   return res.sendStatus(201);
 }
+
+export async function getTypeofEnrollment(req: AuthenticatedRequest, res: Response) {
+  const { enrollmentId } = req.params;
+
+  const enrollment = await enrollmentsService.getTypeofEnrollment(+enrollmentId);
+
+  return res.send(enrollment);
+}
