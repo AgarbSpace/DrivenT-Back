@@ -25,6 +25,18 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
 
     req.userId = userId;
 
+    const enrollment = await prisma.enrollment.findFirst({
+      where: {
+        userId,
+      },
+    });
+
+    if (enrollment) {
+      res.locals.enrollmentId = enrollment.id;
+      res.locals.enrollmentBed = enrollment.bedId;
+      res.locals.userId = enrollment.userId;
+    }
+
     return next();
   } catch (err) {
     return generateUnauthorizedResponse(res);
