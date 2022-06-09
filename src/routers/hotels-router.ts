@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { getHotelInfo } from '@/controllers';
+import { getHotelInfo, postBedBooking } from '@/controllers';
+import { authenticateToken, validateBody } from '@/middlewares';
+import { bedSchema } from '@/schemas';
 
 const hotelsRouter = Router();
 
-hotelsRouter.get('/', getHotelInfo);
+hotelsRouter.all('/*', authenticateToken).get('/', getHotelInfo).post('/', validateBody(bedSchema), postBedBooking);
 
 export { hotelsRouter };
